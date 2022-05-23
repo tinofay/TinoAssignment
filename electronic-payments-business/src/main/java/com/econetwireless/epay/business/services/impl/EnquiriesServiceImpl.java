@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by tnyamakura on 17/3/2017.
  */
@@ -33,10 +35,12 @@ public class EnquiriesServiceImpl implements EnquiriesService {
         LOGGER.info("Enquire airtime balance :: Partner Code : {}, Msisdn : {}", partnerCode, msisdn);
         final AirtimeBalanceResponse airtimeBalanceResponse = new AirtimeBalanceResponse();
         final SubscriberRequest subscriberRequest = populate(partnerCode, msisdn);
-        final SubscriberRequest createdSubscriberRequest = subscriberRequestDao.persist(subscriberRequest);
+        final List<SubscriberRequest> createdSubscriberRequest =subscriberRequestDao.findByPartnerCode(subscriberRequest.getPartnerCode());
+
         final INBalanceResponse inBalanceResponse = chargingPlatform.enquireBalance(partnerCode, msisdn);
-        changeSubscriberStateOnBalanceEnquiry(createdSubscriberRequest, inBalanceResponse);
-        subscriberRequestDao.update(createdSubscriberRequest);
+        createdSubscriberRequest.stream()
+                .forEach(sr-> changeSubscriberStateOnBalanceEnquiry(sr, inBalanceResponse));
+        subscriberRequestDao.save(createdSubscriberRequest);
         airtimeBalanceResponse.setResponseCode(inBalanceResponse.getResponseCode());
         airtimeBalanceResponse.setNarrative(inBalanceResponse.getNarrative());
         airtimeBalanceResponse.setMsisdn(msisdn);
