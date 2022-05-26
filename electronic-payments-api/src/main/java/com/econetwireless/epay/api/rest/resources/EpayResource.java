@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by tnyamakura on 18/3/2017.
  */
 @RestController
-@RequestMapping("resources/services")
+@RequestMapping(path = "/resources/services", headers = {"Accept=application/json", "Accept=application/xml", "Accept=text/xml"})
 public class EpayResource {
 
     private EpayRequestProcessor epayRequestProcessor;
@@ -24,7 +24,7 @@ public class EpayResource {
 
     @GetMapping(value = "enquiries/{partnerCode}/balances/{mobileNumber}",
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public AirtimeBalanceResponse enquireAirtimeBalance( final String pCode, @PathVariable("mobileNumber") final String msisdn) {
+    public AirtimeBalanceResponse enquireAirtimeBalance( @PathVariable("partnerCode") final String pCode, @PathVariable("mobileNumber") final String msisdn) {
         return epayRequestProcessor.enquireAirtimeBalance(pCode, msisdn);
     }
 
