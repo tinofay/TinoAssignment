@@ -10,5 +10,6 @@ import java.util.List;
  * Created by tnyamakura on 17/3/2017.
  */
 public interface SubscriberRequestDao extends JpaRepository<SubscriberRequest, Long> {
+
     List<SubscriberRequest> findByPartnerCode(@Param("partnerCode") String partnerCode);
 }
