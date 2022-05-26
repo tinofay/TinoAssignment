@@ -27,8 +27,8 @@ public class IntegrationsConfig {
     private Environment env;
 
     @Bean
-    public ChargingPlatform chargingPlatform(final IntelligentNetworkService intelligentNetworkService) {
-        return new ChargingPlatformImpl(intelligentNetworkService);
+    public ChargingPlatform chargingPlatform(final IntelligentNetworkService intelligentNetwork) {
+        return new ChargingPlatformImpl(intelligentNetwork);
     }
 
     @Bean
