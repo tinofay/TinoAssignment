@@ -6,7 +6,7 @@ import com.econetwireless.utils.enums.ResponseCode;
  * Created by tnyamakura on 18/3/2017.
  */
 public class EpayException extends RuntimeException {
-    private ResponseCode responseCode;
+    private final ResponseCode responseCode;
 
     public EpayException(ResponseCode responseCode, String message) {
         super(message);
